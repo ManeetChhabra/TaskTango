@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskTango</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <h1> TaskTango</h1>
+    <div class="wrapper">
+        
+        <div class="task-input">
+            <!-- Form handles both adding new tasks and updating existing tasks -->
+            <form action="/" method="post">
+                <input type="text" name="newItem" id="taskInput" placeholder="Add a new task">
+                <!-- Hidden input field to hold task ID when editing -->
+                <input type="hidden" name="taskId" id="taskIdInput">
+                <button type="submit" id="submitButton">Add Task</button>
+            </form>
+        </div>
+
+        <ul class="task-box">
+         <% for(var i=0; i < newListItems.length; i++) { %>
+            <li class="task">
+                <label for="<%=i+1%>">
+                    <input type="checkbox" id="<%=i+1%>">
+                    <p><%= newListItems[i].name %></p>
+                </label>
+                <div class="settings">
+                    <i class="uil uil-ellipsis-h">
+                        <svg fill="none" height="13" viewBox="0 0 16 16" width="13" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 8C10 9.10457 9.10457 10 8 10C6.89543 10 6 9.10457 6 8C6 6.89543 6.89543 6 8 6C9.10457 6 10 6.89543 10 8Z" fill="#030708"/>
+                            <path d="M4 8C4 9.10457 3.10457 10 2 10C0.895431 10 0 9.10457 0 8C0 6.89543 0.895431 6 2 6C3.10457 6 4 6.89543 4 8Z" fill="#030708"/>
+                            <path d="M16 8C16 9.10457 15.1046 10 14 10C12.8954 10 12 9.10457 12 8C12 6.89543 12.8954 6 14 6C15.1046 6 16 6.89543 16 8Z" fill="#030708"/>
+                        </svg>
+                    </i>
+                    <ul class="task-menu">
+                        <li id="edit" onclick="editTask('<%=newListItems[i]._id%>', '<%=newListItems[i].name%>')">
+                            <i>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                                    <path d="M18.311 2.828l2.861 2.861-15.033 15.032-2.859-2.862 15.031-15.031zm0-2.828l-16.873 16.872-1.438 7.127 7.127-1.437 16.873-16.873-5.689-5.689z"/>
+                                </svg>
+                            </i>Edit
+                        </li>
+                        <li id="delete" onclick="deleteTask('<%=newListItems[i]._id%>')">
+                            <i>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                                    <path d="M 10 2 L 9 3 L 4 3 L 4 5 L 5 5 L 5 20 C 5 20.522222 5.1913289 21.05461 5.5683594 21.431641 C 5.9453899 21.808671 6.4777778 22 7 22 L 17 22 C 17.522222 22 18.05461 21.808671 18.431641 21.431641 C 18.808671 21.05461 19 20.522222 19 20 L 19 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 7 5 L 17 5 L 17 20 L 7 20 L 7 5 z M 9 7 L 9 18 L 11 18 L 11 7 L 9 7 z M 13 7 L 13 18 L 15 18 L 15 7 L 13 7 z"/>
+                                </svg>
+                            </i>Delete
+                        </li>
+                    </ul>
+                </div>
+            </li>
+         <% } %>
+        </ul>
+    </div>
+
+    <!-- Hidden form to handle task deletion -->
+    <form id="deleteForm" action="/delete" method="POST" style="display: none;">
+        <input type="hidden" id="taskId" name="taskId" value="">
+    </form>
+
+    <script>
+        const taskInput = document.getElementById('taskInput');
+        const taskIdInput = document.getElementById('taskIdInput');
+        const submitButton = document.getElementById('submitButton');
+
+        // Function to handle delete task logic
+        function deleteTask(id) {
+            document.getElementById('taskId').value = id;
+            document.getElementById('deleteForm').submit(); // Submit delete form
+        }
+
+        // Function to handle edit task logic
+        function editTask(id, name) {
+            taskInput.value = name; // Set task name in the input field
+            taskIdInput.value = id; // Set task ID in hidden input
+            submitButton.textContent = "Update Task"; // Change button text
+            taskInput.focus(); // Focus on the input field for editing
+        }
+    </script>
+</body>
+</html>
