@@ -75,6 +75,6 @@ app.post('/delete', (req, res) => {
     });
 });
 
-app.listen(5050, function () {
+app.listen(process.env.PORT||5050, function () {
     console.log('Server is running on port 5050');
 });
