@@ -7,7 +7,7 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost:27017/todolistDB", { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect("mongodb+srv://22bcs136:BvwYCk2qo6tmg7Ao@cluster0.jt70m.mongodb.net/todolistDB", { useNewUrlParser: true, useUnifiedTopology: true });
 
 const itemsSchema = {
     name: String
@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
             Item.insertMany(defaultItems);
             res.redirect('/');
         } else {
-            res.render("list", { listTitle: "Today", newListItems: foundItems });
+            res.render("list", {newListItems: foundItems });
         }
     });
 });
